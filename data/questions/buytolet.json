@@ -1,0 +1,91 @@
+{
+  "productType": "buyToLet",
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-10",
+  "questions": [
+    {
+      "key": "propertyType",
+      "displayText": "Type of property",
+      "type": "Choice",
+      "isRequired": true,
+      "helpText": "Select the type of property you wish to insure",
+      "ariaLabel": "Property type selection",
+      "validation": {
+        "required": {
+          "value": true,
+          "message": "Please select a property type"
+        }
+      },
+      "answer": {
+        "type": "String",
+        "values": [
+          {
+            "label": "Terraced House",
+            "value": "TerracedHouse",
+            "description": "A property attached to other properties on both sides"
+          },
+          {
+            "label": "Detached House",
+            "value": "DetachedHouse",
+            "description": "A standalone property not attached to others"
+          },
+          {
+            "label": "Semi Detached House",
+            "value": "SemiDetachedHouse",
+            "description": "A property attached to one other property"
+          },
+          {
+            "label": "Terraced Bungalow",
+            "value": "TerracedBungalow",
+            "description": "A single-story property attached on both sides"
+          }
+        ]
+      }
+    },
+    {
+      "key": "numberOfBedrooms",
+      "displayText": "Number of bedrooms",
+      "type": "Choice",
+      "isRequired": true,
+      "helpText": "Select the number of bedrooms in the property (1-6)",
+      "validation": {
+        "required": {
+          "value": true,
+          "message": "Please select the number of bedrooms"
+        }
+      },
+      "answer": {
+        "type": "Number",
+        "values": [
+          { "label": "1 Bedroom", "value": "1" },
+          { "label": "2 Bedrooms", "value": "2" },
+          { "label": "3 Bedrooms", "value": "3" },
+          { "label": "4 Bedrooms", "value": "4" },
+          { "label": "5 Bedrooms", "value": "5" },
+          { "label": "6 Bedrooms", "value": "6" }
+        ]
+      }
+    },
+    {
+      "key": "isPropertyLetToStudents",
+      "displayText": "Is the property let to students?",
+      "type": "Boolean",
+      "isRequired": true,
+      "helpText": "Indicate whether the property is currently let to students",
+      "validation": {
+        "required": {
+          "value": true,
+          "message": "Please specify if the property is let to students"
+        }
+      },
+      "answer": {
+        "type": "Boolean",
+        "renderAs": "radio",
+        "values": [
+          { "label": "Yes", "value": true },
+          { "label": "No", "value": false }
+        ]
+      }
+    }
+  ]
+}
