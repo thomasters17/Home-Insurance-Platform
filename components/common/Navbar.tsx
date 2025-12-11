@@ -1,19 +1,18 @@
 'use client';
 
-import React from 'react';
+import {useState} from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Shield, Menu, X } from 'lucide-react';
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+export const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
     { href: '/policies', label: 'Policies' },
-    { href: '/about', label: 'About' },
   ];
 
   const isActive = (href: string) => {
@@ -49,7 +48,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/quote"
+              href="/products"
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
               Get Quote
