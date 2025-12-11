@@ -1,15 +1,14 @@
-'use client';
-
 import { Policy, isHouseholdPolicy, isBuyToLetPolicy } from '@/lib/types/policy.types';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import {PRODUCT_TYPES} from "@/lib/utils/constants";
 
 interface PolicyDetailProps {
   policy: Policy;
 }
 
 export const PolicyDetail = ({ policy }: PolicyDetailProps) => {
-  const productLabel = policy.productType === 'household' ? 'Household Insurance' : 'Buy to Let Insurance';
+  const productLabel = policy.productType === PRODUCT_TYPES.HOUSEHOLD ? 'Household' : 'Buy to Let';
   const createdDate = new Date(policy.createdAt).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'long',
@@ -39,10 +38,10 @@ export const PolicyDetail = ({ policy }: PolicyDetailProps) => {
         <div>
           <h1 className="text-3xl font-bold mb-2">Policy Details</h1>
           <p className="text-gray-600">Policy ID: {policy.id}</p>
+          <Badge className="mt-2">
+            {productLabel}
+          </Badge>
         </div>
-        <Badge variant={policy.productType === 'household' ? 'default' : 'secondary'} className="text-lg py-2 px-4">
-          {productLabel}
-        </Badge>
       </div>
 
       {/* Policyholder Information */}

@@ -3,21 +3,23 @@
 import {useState} from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Shield, Menu, X } from 'lucide-react';
+import {Shield, Menu, X, Plus} from 'lucide-react';
+import {APP_NAME, ROUTES} from "@/lib/utils/constants";
+import {Button} from "@/components/ui/button";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/products', label: 'Products' },
-    { href: '/policies', label: 'Policies' },
+    { href: ROUTES.HOME, label: 'Home' },
+    { href: ROUTES.PRODUCTS, label: 'Products' },
+    { href: ROUTES.POLICIES, label: 'Policies' },
   ];
 
   const isActive = (href: string) => {
-    if (href === '/') {
-      return pathname === '/';
+    if (href === ROUTES.HOME) {
+      return pathname === ROUTES.HOME;
     }
     return pathname.startsWith(href);
   };
@@ -27,9 +29,9 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href={ROUTES.HOME} className="flex items-center space-x-2">
             <Shield className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Uinsure</span>
+            <span className="text-2xl font-bold text-gray-900">{APP_NAME}</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -47,11 +49,11 @@ export const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/products"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              Get Quote
+            <Link href="/products">
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+               Get Quote
+              </Button>
             </Link>
           </div>
 
@@ -87,7 +89,7 @@ export const Navbar = () => {
               </Link>
             ))}
             <Link
-              href="/quote"
+              href={ROUTES.PRODUCTS}
               onClick={() => setIsMenuOpen(false)}
               className="block w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center"
             >

@@ -30,7 +30,7 @@ export interface Property {
   addressLine1: string;
   addressLine2?: string;
   addressLine3?: string;
-  postcode: string; // Max 8 characters including space
+  postcode: string;
 }
 
 /**

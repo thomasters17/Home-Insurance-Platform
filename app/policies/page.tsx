@@ -5,26 +5,22 @@ import { PolicyCard } from '@/components/policy/PolicyCard';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { Plus, FileText } from 'lucide-react';
-import {Policy} from "@/lib/types/policy.types";
-import {mockPolicies} from "@/data/mocks/policies";
+import {usePolicies} from "@/lib/hooks/usePolicies";
+import {PageWrapper} from "@/components/layout/PageWrapper";
 
 const PoliciesPage = () => {
-  const policies: Policy[] = mockPolicies;
-  const count = mockPolicies.length
-  const isLoading = false
-
-  // TODO: Create usePolicies hook to manage the above
+  const { policies, isLoading, count } = usePolicies();
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <PageWrapper center>
         <LoadingSpinner />
-      </div>
+      </PageWrapper>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <PageWrapper>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -36,12 +32,6 @@ const PoliciesPage = () => {
                 : `${count} ${count === 1 ? 'policy' : 'policies'} found`}
             </p>
           </div>
-          <Link href="/products">
-            <Button size="lg">
-              <Plus className="mr-2 h-5 w-5" />
-              Create New Policy
-            </Button>
-          </Link>
         </div>
 
         {/* Empty State */}
@@ -73,7 +63,7 @@ const PoliciesPage = () => {
           </div>
         )}
       </div>
-    </div>
+    </PageWrapper>
   );
 }
 

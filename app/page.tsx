@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Shield } from 'lucide-react';
+import {PageWrapper} from "@/components/layout/PageWrapper";
+import {ROUTES} from "@/lib/utils/constants";
 
 const HomePage = async () => {
   return (
-    <div className="min-h-[calc(100vh-4rem)]">
+    <PageWrapper>
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <Shield className="h-16 w-16 text-blue-600 mx-auto mb-6" />
@@ -18,12 +20,12 @@ const HomePage = async () => {
               Whether you&#39;re insuring your own home or a buy-to-let property, we&#39;ve got you covered.
             </p>
             <div className="flex gap-4 justify-center">
-              <Link href="/products">
+              <Link href={ROUTES.PRODUCTS}>
                 <Button size="lg" className="text-lg px-8 py-6">
                   Get a Quote
                 </Button>
               </Link>
-              <Link href="/policies">
+              <Link href={ROUTES.POLICIES}>
                 <Button size="lg" variant="outline" className="text-lg px-8 py-6">
                   View Policies
                 </Button>
@@ -32,7 +34,7 @@ const HomePage = async () => {
           </div>
         </div>
       </section>
-    </div>
+    </PageWrapper>
   );
 }
 

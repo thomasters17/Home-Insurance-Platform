@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Home, Building2, Check } from 'lucide-react';
+import {Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter} from '@/components/ui/card';
+import {Button} from '@/components/ui/button';
+import {Home, Building2, Check} from 'lucide-react';
+import {PageWrapper} from "@/components/layout/PageWrapper";
 
 const ProductsPage = async () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <PageWrapper>
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Choose Your Insurance Type</h1>
         <p className="text-xl text-gray-600">
@@ -19,7 +20,7 @@ const ProductsPage = async () => {
           <CardHeader>
             <div className="flex justify-center mb-4">
               <div className="bg-blue-100 rounded-full p-6">
-                <Home className="h-12 w-12 text-blue-600" />
+                <Home className="h-12 w-12 text-blue-600"/>
               </div>
             </div>
             <CardTitle className="text-2xl text-center">Household Insurance</CardTitle>
@@ -30,19 +31,19 @@ const ProductsPage = async () => {
           <CardContent>
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Comprehensive building and contents cover</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Protection for your personal belongings</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Emergency accommodation coverage</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Personal liability protection</span>
               </li>
             </ul>
@@ -61,7 +62,7 @@ const ProductsPage = async () => {
           <CardHeader>
             <div className="flex justify-center mb-4">
               <div className="bg-purple-100 rounded-full p-6">
-                <Building2 className="h-12 w-12 text-purple-600" />
+                <Building2 className="h-12 w-12 text-purple-600"/>
               </div>
             </div>
             <CardTitle className="text-2xl text-center">Buy to Let Insurance</CardTitle>
@@ -72,19 +73,19 @@ const ProductsPage = async () => {
           <CardContent>
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Landlord-specific building cover</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Loss of rental income protection</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Public liability for tenant injuries</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0"/>
                 <span>Malicious damage coverage</span>
               </li>
             </ul>
@@ -99,7 +100,7 @@ const ProductsPage = async () => {
           </CardFooter>
         </Card>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
 
