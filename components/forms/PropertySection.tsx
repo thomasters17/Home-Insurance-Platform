@@ -1,24 +1,15 @@
-import {Label} from '@/components/ui/label';
-import {Input} from '@/components/ui/input';
-import {ErrorMessage} from '../common/ErrorMessage';
+'use client';
+
+import { Control } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { PolicyFormData } from '@/lib/types/form.types';
 
 interface PropertySectionProps {
-  values: {
-    addressLine1?: string;
-    addressLine2?: string;
-    addressLine3?: string;
-    postcode?: string;
-  };
-  onChange: (field: string, value: string) => void;
-  errors: {
-    addressLine1?: string;
-    addressLine2?: string;
-    addressLine3?: string;
-    postcode?: string;
-  };
+  control: Control<PolicyFormData>;
 }
 
-export const PropertySection = ({values, onChange, errors}: PropertySectionProps) => {
+export const PropertySection = ({ control }: PropertySectionProps)=> {
   return (
     <div className="space-y-6">
       <div>
@@ -27,75 +18,77 @@ export const PropertySection = ({values, onChange, errors}: PropertySectionProps
       </div>
 
       {/* Address Line 1 */}
-      <div className="space-y-2">
-        <Label htmlFor="addressLine1">
-          Address Line 1
-          <span className="text-red-600 ml-1" aria-label="required">*</span>
-        </Label>
-        <Input
-          id="addressLine1"
-          type="text"
-          value={values.addressLine1 || ''}
-          onChange={(e) => onChange('addressLine1', e.target.value)}
-          placeholder="House number and street name"
-          aria-invalid={!!errors.addressLine1}
-          aria-describedby={errors.addressLine1 ? 'addressLine1-error' : undefined}
-        />
-        {errors.addressLine1 && (
-          <ErrorMessage message={errors.addressLine1}/>
+      <FormField
+        control={control}
+        name="property.addressLine1"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              Address Line 1
+              <span className="text-red-600 ml-1" aria-label="required">*</span>
+            </FormLabel>
+            <FormControl>
+              <Input placeholder="House number and street name" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
         )}
-      </div>
+      />
 
-      {/* Address Line 2 (Optional) */}
-      <div className="space-y-2">
-        <Label htmlFor="addressLine2">Address Line 2 (Optional)</Label>
-        <Input
-          id="addressLine2"
-          type="text"
-          value={values.addressLine2 || ''}
-          onChange={(e) => onChange('addressLine2', e.target.value)}
-          placeholder="Apartment, suite, etc."
-        />
-      </div>
+      {/* Address Line 2 */}
+      <FormField
+        control={control}
+        name="property.addressLine2"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Address Line 2 (Optional)</FormLabel>
+            <FormControl>
+              <Input placeholder="Apartment, suite, etc." {...field} value={field.value || ''} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-      {/* Address Line 3 (Optional) */}
-      <div className="space-y-2">
-        <Label htmlFor="addressLine3">Address Line 3 (Optional)</Label>
-        <Input
-          id="addressLine3"
-          type="text"
-          value={values.addressLine3 || ''}
-          onChange={(e) => onChange('addressLine3', e.target.value)}
-          placeholder="Additional address details"
-        />
-      </div>
+      {/* Address Line 3 */}
+      <FormField
+        control={control}
+        name="property.addressLine3"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Address Line 3 (Optional)</FormLabel>
+            <FormControl>
+              <Input placeholder="Additional address details" {...field} value={field.value || ''} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       {/* Postcode */}
-      <div className="space-y-2">
-        <Label htmlFor="postcode">
-          Postcode
-          <span className="text-red-600 ml-1" aria-label="required">*</span>
-        </Label>
-        <Input
-          id="postcode"
-          type="text"
-          value={values.postcode || ''}
-          onChange={(e) => {
-            // Convert to uppercase as user types
-            onChange('postcode', e.target.value.toUpperCase());
-          }}
-          placeholder="e.g., SW1A 1AA"
-          maxLength={8}
-          aria-invalid={!!errors.postcode}
-          aria-describedby={errors.postcode ? 'postcode-error' : 'postcode-help'}
-        />
-        <p id="postcode-help" className="text-sm text-gray-500">
-          UK postcode format (max 8 characters)
-        </p>
-        {errors.postcode && (
-          <ErrorMessage message={errors.postcode}/>
+      <FormField
+        control={control}
+        name="property.postcode"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              Postcode
+              <span className="text-red-600 ml-1" aria-label="required">*</span>
+            </FormLabel>
+            <FormControl>
+              <Input
+                placeholder="e.g., SW1A 1AA"
+                maxLength={8}
+                {...field}
+                onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                value={field.value || ''}
+              />
+            </FormControl>
+            <FormDescription>UK postcode format (max 8 characters)</FormDescription>
+            <FormMessage />
+          </FormItem>
         )}
-      </div>
+      />
     </div>
   );
 }

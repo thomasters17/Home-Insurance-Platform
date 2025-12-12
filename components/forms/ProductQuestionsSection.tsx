@@ -1,47 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Control, FieldPath } from 'react-hook-form';
+import { FormField } from '@/components/ui/form';
 import { DynamicField } from './DynamicField';
-import { ProductQuestions } from '@/lib/types/question.types';
-import { questionService } from '@/lib/services/questionService';
 import { ProductType } from '@/lib/types/policy.types';
+import { PolicyFormData } from '@/lib/types/form.types';
+import { useProductQuestions } from '@/lib/hooks/useProductQuestions';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import {ErrorMessage} from "@/components/common/ErrorMessage";
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 
 interface ProductQuestionsSectionProps {
   productType: ProductType;
-  values: Record<string, any>;
-  onChange: (field: string, value: any) => void;
-  errors: Record<string, string>;
+  control: Control<PolicyFormData>;
 }
 
-export const ProductQuestionsSection = ({
-                                          productType,
-                                          values,
-                                          onChange,
-                                          errors,
-                                        }: ProductQuestionsSectionProps)=> {
-  const [questions, setQuestions] = useState<ProductQuestions | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    loadQuestions();
-  }, [productType]);
-
-  const loadQuestions = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const config = await questionService.getQuestions(productType);
-      setQuestions(config);
-    } catch (err) {
-      console.error('Error loading questions:', err);
-      setError('Failed to load questions. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+export const ProductQuestionsSection = ({ productType, control }: ProductQuestionsSectionProps) => {
+  const { questions, isLoading, error } = useProductQuestions(productType);
 
   if (isLoading) {
     return (
@@ -52,11 +26,7 @@ export const ProductQuestionsSection = ({
   }
 
   if (error || !questions) {
-    return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <ErrorMessage message={error || 'Failed to load questions'} />
-      </div>
-    );
+    return <ErrorMessage message={error || 'Failed to load questions'} />;
   }
 
   return (
@@ -70,16 +40,27 @@ export const ProductQuestionsSection = ({
         </p>
       </div>
 
-      {/* Dynamically render all questions from config */}
-      {questions.questions.map((question) => (
-        <DynamicField
-          key={question.key}
-          question={question}
-          value={values[question.key]}
-          onChange={(value) => onChange(question.key, value)}
-          error={errors[question.key]}
-        />
-      ))}
+      {/*
+        We construct the field path dynamically and cast it
+        to FieldPath<PolicyFormData>. This is safe because:
+        1. We know the path starts with "productAnswers."
+        2. The validation schema will catch any invalid fields
+        3. TypeScript can't know dynamic JSON keys at compile time
+      */}
+      {questions.questions.map((question) => {
+        const fieldName = `productAnswers.${question.key}` as FieldPath<PolicyFormData>;
+
+        return (
+          <FormField
+            key={question.key}
+            control={control}
+            name={fieldName}
+            render={({ field }) => (
+              <DynamicField question={question} field={field} />
+            )}
+          />
+        );
+      })}
     </div>
   );
 }

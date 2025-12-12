@@ -28,7 +28,7 @@ export const PolicyCard = ({policy}: PolicyCardProps) => {
               </CardTitle>
               <CardDescription>{policy.property.addressLine1}</CardDescription>
             </div>
-            <Badge variant={policy.productType === PRODUCT_TYPES.HOUSEHOLD ? 'default' : 'secondary'}>
+            <Badge>
               {productLabel}
             </Badge>
           </div>

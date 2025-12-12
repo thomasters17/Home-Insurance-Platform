@@ -1,22 +1,15 @@
-import { Label } from '@/components/ui/label';
+'use client';
+
+import { Control } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { ErrorMessage } from '../common/ErrorMessage';
+import { PolicyFormData } from '@/lib/types/form.types';
 
 interface PolicyholderSectionProps {
-  values: {
-    firstName?: string;
-    lastName?: string;
-    dateOfBirth?: string;
-  };
-  onChange: (field: string, value: string) => void;
-  errors: {
-    firstName?: string;
-    lastName?: string;
-    dateOfBirth?: string;
-  };
+  control: Control<PolicyFormData>;
 }
 
-export const PolicyholderSection = ({ values, onChange, errors }: PolicyholderSectionProps) => {
+export const PolicyholderSection = ({ control }: PolicyholderSectionProps)=> {
   return (
     <div className="space-y-6">
       <div>
@@ -25,67 +18,65 @@ export const PolicyholderSection = ({ values, onChange, errors }: PolicyholderSe
       </div>
 
       {/* First Name */}
-      <div className="space-y-2">
-        <Label htmlFor="firstName">
-          First Name
-          <span className="text-red-600 ml-1" aria-label="required">*</span>
-        </Label>
-        <Input
-          id="firstName"
-          type="text"
-          value={values.firstName || ''}
-          onChange={(e) => onChange('firstName', e.target.value)}
-          placeholder="Enter your first name"
-          aria-invalid={!!errors.firstName}
-          aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-        />
-        {errors.firstName && (
-          <ErrorMessage message={errors.firstName}/>
+      <FormField
+        control={control}
+        name="policyholder.firstName"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              First Name
+              <span className="text-red-600 ml-1" aria-label="required">*</span>
+            </FormLabel>
+            <FormControl>
+              <Input placeholder="Enter your first name" {...field} />
+            </FormControl>
+            <FormDescription>As shown on official documents</FormDescription>
+            <FormMessage />
+          </FormItem>
         )}
-      </div>
+      />
 
       {/* Last Name */}
-      <div className="space-y-2">
-        <Label htmlFor="lastName">
-          Last Name
-          <span className="text-red-600 ml-1" aria-label="required">*</span>
-        </Label>
-        <Input
-          id="lastName"
-          type="text"
-          value={values.lastName || ''}
-          onChange={(e) => onChange('lastName', e.target.value)}
-          placeholder="Enter your last name"
-          aria-invalid={!!errors.lastName}
-          aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-        />
-        {errors.lastName && (
-          <ErrorMessage message={errors.lastName} />
+      <FormField
+        control={control}
+        name="policyholder.lastName"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              Last Name
+              <span className="text-red-600 ml-1" aria-label="required">*</span>
+            </FormLabel>
+            <FormControl>
+              <Input placeholder="Enter your last name" {...field} />
+            </FormControl>
+            <FormDescription>As shown on official documents</FormDescription>
+            <FormMessage />
+          </FormItem>
         )}
-      </div>
+      />
 
       {/* Date of Birth */}
-      <div className="space-y-2">
-        <Label htmlFor="dateOfBirth">
-          Date of Birth
-          <span className="text-red-600 ml-1" aria-label="required">*</span>
-        </Label>
-        <Input
-          id="dateOfBirth"
-          type="date"
-          value={values.dateOfBirth || ''}
-          onChange={(e) => onChange('dateOfBirth', e.target.value)}
-          max={new Date().toISOString().split('T')[0]} // Cannot be in the future
-          aria-invalid={!!errors.dateOfBirth}
-          aria-describedby={errors.dateOfBirth ? 'dateOfBirth-error' : 'dateOfBirth-help'}
-        />
-        <p id="dateOfBirth-help" className="text-sm text-gray-500">
-          You must be 18 or over to purchase insurance
-        </p>
-        {errors.dateOfBirth && (
-          <ErrorMessage message={errors.dateOfBirth} />
+      <FormField
+        control={control}
+        name="policyholder.dateOfBirth"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              Date of Birth
+              <span className="text-red-600 ml-1" aria-label="required">*</span>
+            </FormLabel>
+            <FormControl>
+              <Input
+                type="date"
+                max={new Date().toISOString().split('T')[0]}
+                {...field}
+              />
+            </FormControl>
+            <FormDescription>You must be 18 or over to purchase insurance</FormDescription>
+            <FormMessage />
+          </FormItem>
         )}
-      </div>
+      />
     </div>
   );
 }

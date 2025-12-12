@@ -2,6 +2,7 @@
  * Custom hook for managing policy data
  * Provides a clean interface for components to interact with policies
  */
+
 'use client';
 
 import { useState, useEffect } from 'react';

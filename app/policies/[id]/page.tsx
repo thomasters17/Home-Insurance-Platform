@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useMemo } from 'react';
 import { PolicyDetail } from '@/components/policy/PolicyDetail';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Plus } from 'lucide-react';
@@ -12,12 +11,12 @@ import {PageWrapper} from "@/components/layout/PageWrapper";
 import {ROUTES} from "@/lib/utils/constants";
 
 const PolicyDetailPage = () => {
-  const params = useParams();
+  const params = useParams<{id: string}>();
   const router = useRouter();
+
   const { getPolicyById, isLoading } = usePolicies();
 
-  const id = typeof params?.id === 'string' ? params.id : Array.isArray(params?.id) ? params.id[0] : undefined;
-  const policy = useMemo(() => (id ? getPolicyById(id) : undefined), [id, getPolicyById]);
+  const policy = getPolicyById(params.id);
 
   if (isLoading) {
     return (
@@ -29,7 +28,7 @@ const PolicyDetailPage = () => {
 
   if (!policy) {
     return (
-      <PageWrapper>
+      <PageWrapper className="flex justify-center">
         <div className="max-w-7xl w-full px-4 sm:px-6 lg:px-8 text-center">
 
           {/* Back Button */}
@@ -47,7 +46,7 @@ const PolicyDetailPage = () => {
 
           {/* Description */}
           <p className="text-gray-600 mb-6">
-            We couldn&apos;t find a policy with ID: <span className="font-mono">{id}</span>
+            We couldn&apos;t find a policy with ID: <span className="font-mono">{params.id}</span>
           </p>
 
           {/* Action Button */}
