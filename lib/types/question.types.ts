@@ -5,7 +5,6 @@
 import {ProductType} from "@/lib/types/policy.types";
 
 export type FieldType = 'Choice' | 'Boolean' | 'Text' | 'Number' | 'Date';
-export type AnswerType = 'String' | 'Number' | 'Boolean';
 export type BooleanRenderType = 'radio' | 'checkbox' | 'toggle';
 
 /**

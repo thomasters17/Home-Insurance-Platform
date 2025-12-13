@@ -55,8 +55,7 @@ export interface BuyToLetAnswers {
  * Generic product answers type
  * Allows either Household or BuyToLet specific answers
  */
-export type ProductAnswers = HouseholdAnswers | BuyToLetAnswers;
-
+export type ProductAnswers = Record<string, any>;
 /**
  * Complete policy data structure
  * This is what gets stored when a user submits the form

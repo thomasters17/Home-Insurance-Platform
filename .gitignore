@@ -12,6 +12,9 @@
 
 # testing
 /coverage
+/test-results
+/.features-gen
+/playwright-report
 
 # next.js
 /.next/
@@ -39,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ide
+.idea

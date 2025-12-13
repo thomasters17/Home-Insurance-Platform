@@ -7,8 +7,8 @@
 
 import { useState, useEffect } from 'react';
 import { ProductQuestions } from '../types/question.types';
+import { ProductType } from '../types/policy.types';
 import { questionService } from '../services/questionService';
-import {ProductType} from "@/lib/types/policy.types";
 
 export function useProductQuestions(productType: ProductType) {
   const [questions, setQuestions] = useState<ProductQuestions | null>(null);

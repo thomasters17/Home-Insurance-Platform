@@ -10,12 +10,6 @@
       "isRequired": true,
       "helpText": "Select the type of property you wish to insure",
       "ariaLabel": "Property type selection",
-      "validation": {
-        "required": {
-          "value": true,
-          "message": "Please select a property type"
-        }
-      },
       "answer": {
         "type": "String",
         "values": [
@@ -48,12 +42,6 @@
       "type": "Choice",
       "isRequired": true,
       "helpText": "Select the number of bedrooms in the property (1-6)",
-      "validation": {
-        "required": {
-          "value": true,
-          "message": "Please select the number of bedrooms"
-        }
-      },
       "answer": {
         "type": "Number",
         "values": [
@@ -72,12 +60,6 @@
       "type": "Boolean",
       "isRequired": true,
       "helpText": "Indicate whether the property is currently let to students",
-      "validation": {
-        "required": {
-          "value": true,
-          "message": "Please specify if the property is let to students"
-        }
-      },
       "answer": {
         "type": "Boolean",
         "renderAs": "radio",
