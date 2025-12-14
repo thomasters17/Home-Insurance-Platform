@@ -21,6 +21,8 @@ interface DynamicFieldProps {
 }
 
 export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
+  const describedById = question.helpText ? `${question.key}-help` : undefined;
+
   /**
    * Render field based on type
    */
@@ -41,7 +43,11 @@ export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
           }}
         >
           <FormControl>
-            <SelectTrigger>
+            <SelectTrigger
+              aria-label={question.ariaLabel}
+              aria-required={question.isRequired || undefined}
+              aria-describedby={describedById}
+            >
               <SelectValue placeholder={`Select ${question.displayText.toLowerCase()}`} />
             </SelectTrigger>
           </FormControl>
@@ -62,6 +68,9 @@ export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
         <RadioGroup
           onValueChange={(val) => field.onChange(val === 'true')}
           value={field.value?.toString() || ''}
+          aria-label={question.ariaLabel}
+          aria-required={question.isRequired || undefined}
+          aria-describedby={describedById}
         >
           {question.answer.values.map((option) => (
             <div key={option.value.toString()} className="flex items-center space-x-2">
@@ -89,6 +98,9 @@ export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
         <Input
           type={inputType}
           placeholder={question.placeholder}
+          aria-label={question.ariaLabel}
+          aria-required={question.isRequired || undefined}
+          aria-describedby={describedById}
           {...field}
           onChange={(e) => {
             const newValue = question.type === 'Number'
@@ -114,7 +126,7 @@ export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
       </FormLabel>
       {renderField()}
       {question.helpText && (
-        <FormDescription>{question.helpText}</FormDescription>
+        <FormDescription id={describedById}>{question.helpText}</FormDescription>
       )}
       <FormMessage />
     </FormItem>
