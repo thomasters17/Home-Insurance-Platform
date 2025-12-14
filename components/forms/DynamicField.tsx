@@ -23,7 +23,6 @@ interface DynamicFieldProps {
 export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
   /**
    * Render field based on type
-   * Now using the field object from React Hook Form
    */
   const renderField = () => {
     // Handle Choice type (select dropdown)
@@ -36,6 +35,10 @@ export const DynamicField = ({ question, field }: DynamicFieldProps)=>  {
             field.onChange(convertedValue);
           }}
           value={field.value?.toString() || ''}
+          // triggers field validation on blur
+          onOpenChange={(open) => {
+            if (!open) field.onBlur();
+          }}
         >
           <FormControl>
             <SelectTrigger>

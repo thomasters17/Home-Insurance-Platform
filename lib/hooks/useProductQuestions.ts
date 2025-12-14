@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import { ProductQuestions } from '../types/question.types';
 import { ProductType } from '../types/policy.types';
 import { questionService } from '../services/questionService';
@@ -15,11 +15,7 @@ export function useProductQuestions(productType: ProductType) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadQuestions();
-  }, [productType]);
-
-  const loadQuestions = async () => {
+  const loadQuestions = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -31,7 +27,11 @@ export function useProductQuestions(productType: ProductType) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [productType]);
+
+  useEffect(() => {
+    loadQuestions();
+  }, [loadQuestions]);
 
   return {
     questions,

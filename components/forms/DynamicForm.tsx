@@ -70,7 +70,7 @@ export const DynamicForm = ({ productType }: DynamicFormProps) => {
       },
       productAnswers: {},
     },
-    mode: 'onBlur',
+    mode: 'onBlur'
   });
 
   const onSubmit = async (data: PolicyFormData) => {

@@ -1,68 +1,123 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { PRODUCT_TYPES } from '@/lib/utils/constants';
 import {questionService} from "@/lib/services/questionService";
-
-vi.mock('@/data/questions/household.json', () => ({
-  default: {
-    productType: 'household',
-    version: '1.0.0',
-    lastUpdated: '2024-01-01',
-    questions: [
-      { key: 'q1', displayText: 'Question 1', type: 'Text', isRequired: true, answer: null },
-    ],
-  },
-}));
-
-vi.mock('@/data/questions/buytolet.json', () => ({
-  default: {
-    productType: 'buyToLet',
-    version: '1.0.0',
-    lastUpdated: '2024-01-01',
-    questions: [
-      { key: 'q2', displayText: 'Question 2', type: 'Number', isRequired: true, answer: null },
-    ],
-  },
-}));
+import {PRODUCT_TYPES} from "@/lib/utils/constants";
+import {ProductQuestions} from "@/lib/types/question.types";
 
 describe('QuestionService', () => {
+  const mockHouseholdQuestions: ProductQuestions = {
+    productType: 'household',
+    version: '1.0.0',
+    lastUpdated: '2024-12-10',
+    questions: [
+      {
+        key: 'propertyType',
+        displayText: 'Property Type',
+        type: 'Choice',
+        isRequired: true,
+        answer: {
+          type: 'String',
+          values: [{ label: 'House', value: 'house' }],
+        },
+      },
+    ],
+  };
+
   beforeEach(() => {
+    vi.resetAllMocks();
     questionService.clearCache();
   });
 
-  it('loads household questions', async () => {
+  it('fetches questions for a product type', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockHouseholdQuestions),
+      } as any)
+    );
+
     const result = await questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD);
-
-    expect(result.productType).toBe('household');
-    expect(result.questions[0].key).toBe('q1');
+    expect(result).toEqual(mockHouseholdQuestions);
+    expect(global.fetch).toHaveBeenCalledWith('/data/questions/household.json');
   });
 
-  it('loads buy-to-let questions', async () => {
-    const result = await questionService.getQuestions(PRODUCT_TYPES.BUY_TO_LET);
+  it('caches results after first fetch', async () => {
+    let fetchCallCount = 0;
+    global.fetch = vi.fn(() => {
+      fetchCallCount++;
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockHouseholdQuestions),
+      } as any);
+    });
 
-    expect(result.productType).toBe('buyToLet');
-    expect(result.questions[0].key).toBe('q2');
+    const first = await questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD);
+    const second = await questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD);
+
+    expect(first).toEqual(mockHouseholdQuestions);
+    expect(second).toEqual(mockHouseholdQuestions);
+    expect(fetchCallCount).toBe(1); // fetched only once
   });
 
-  it('caches loaded questions', async () => {
-    const spy = vi.spyOn(questionService, 'validateQuestionStructure' as any);
-
-    await questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD);
-    await questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('throws for unknown product type', async () => {
-    // @ts-expect-error intentional
-    await expect(questionService.getQuestions('invalid')).rejects.toThrow(
-      'Unknown product type: invalid',
+  it('throws if fetch fails', async () => {
+    global.fetch = vi.fn(() => Promise.resolve({ ok: false } as any));
+    await expect(questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD)).rejects.toThrow(
+      'Failed to load questions'
     );
   });
 
-  it('preloadAll caches both configs', async () => {
-    await expect(questionService.preloadAll()).resolves.not.toThrow();
+  it('throws if structure is invalid', async () => {
+    const invalidQuestions = { productType: '', version: '', questions: [] };
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(invalidQuestions),
+      } as any)
+    );
 
-    // @ts-expect-error: ok for tests
-    expect(questionService.cache.size).toBe(2);
+    await expect(questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD)).rejects.toThrow(
+      'Invalid question configuration structure'
+    );
   });
+
+  it('fetches buy-to-let questions correctly', async () => {
+    const mockBuyToLet: ProductQuestions = {
+      productType: 'buyToLet',
+      version: '1.0.0',
+      lastUpdated: '2024-12-10',
+      questions: [
+        {
+          key: 'propertyType',
+          displayText: 'Property Type',
+          type: 'Choice',
+          isRequired: true,
+          answer: { type: 'String', values: [{ label: 'Flat', value: 'flat' }] },
+        },
+      ],
+    };
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockBuyToLet),
+      } as any)
+    );
+
+    const result = await questionService.getQuestions(PRODUCT_TYPES.BUY_TO_LET);
+    expect(result).toEqual(mockBuyToLet);
+    expect(global.fetch).toHaveBeenCalledWith('/data/questions/buyToLet.json');
+  });
+
+  it('clears cache correctly', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve(mockHouseholdQuestions) } as any)
+    );
+
+    await questionService.getQuestions(PRODUCT_TYPES.HOUSEHOLD);
+    expect(questionService['cache'].size).toBe(1);
+
+    questionService.clearCache();
+    expect(questionService['cache'].size).toBe(0);
+  });
+
+
 });

@@ -60,23 +60,6 @@ Also added `ariaLabel` for screen reader compatibility on complex fields.
 
 **Why**: Not everyone knows the difference between "terraced" and "semi-detached". These descriptions help all users make informed choices and ensure the form is WCAG 2.1 AA compliant.
 
-### 5. Structured Validation Rules
-
-Changed from simple boolean to detailed validation object:
-```json
-"validation": {
-  "required": {
-    "value": true,
-    "message": "Please select a property type"
-  }
-}
-```
-
-**Why**:
-- Custom error messages improve UX over generic "This field is required"
-- Makes it easier to add more validation rules later (min/max, patterns)
-- Error messages can be updated by non-developers without code changes
-
 ### 6. Properly Structured Boolean Fields
 
 The student letting question previously had `"answer": null`. Now it has:
